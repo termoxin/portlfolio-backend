@@ -1,6 +1,8 @@
 // Please, don't wipe this!
 
 const pages = require("./pages");
+const projects = require("./projects");
+const messages = require("./messages");
 const router = require("../libs/router");
 const tokens = require("../libs/api").tokens;
 const users = require("../libs/api").users;

@@ -5,7 +5,7 @@ class Project {
   static getProject(name, callback) {
     _data.read("projects", name, (err, data) => {
       if (!err && data) {
-        callback(data);
+        callback(false, data);
       } else {
         callback(err);
       }
@@ -18,9 +18,12 @@ class Project {
     _data.list("projects", (err, projects) => {
       if (!err && projects) {
         projects.forEach(project => {
-          _data.read("project", project.name, (err, data) => {
+          _data.read("projects", project, (err, data) => {
             if (!err && data) {
               projectArray.push(data);
+              if (projects.length === projectArray.length) {
+                callback(projectArray);
+              }
             } else {
               callback(err);
             }
@@ -30,8 +33,6 @@ class Project {
         callback(err);
       }
     });
-
-    callback(projectArray);
   }
 
   static createProject(name, description, img, src, callback) {
@@ -49,7 +50,7 @@ class Project {
 
     _data.create("projects", name, data, err => {
       if (!err) {
-        callback(true);
+        callback(false);
       } else {
         callback(err);
       }
@@ -69,11 +70,11 @@ class Project {
       src
     };
 
-    helpers.verifyToken(token, (statusCode, err) => {
-      if (!err && statusCode === 200) {
+    helpers.verifyToken(token, (statusCode, err, isAdmin) => {
+      if (!err && statusCode === 200 && isAdmin) {
         _data.update("projects", name, data, (err, data) => {
           if (!err && data) {
-            callback(data);
+            callback(err, data, isAdmin);
           } else {
             callback(err);
           }
@@ -85,8 +86,8 @@ class Project {
   }
 
   static deleteProject(name, token, callback) {
-    helpers.verifyToken(token, (statusCode, err) => {
-      if (!err && statusCode === 200) {
+    helpers.verifyToken(token, (statusCode, err, isAdmin) => {
+      if (!err && statusCode === 200 && isAdmin) {
         _data.delete("projects", name, err => {
           if (!err) {
             callback(false);

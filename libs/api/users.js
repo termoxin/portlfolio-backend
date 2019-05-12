@@ -84,8 +84,8 @@ users.updateUser = (data, callback) => {
   let { username, newUserName, lastName, firstName, password } = data.body;
 
   if (data.headers.token) {
-    helpers.verifyToken(data.headers.token, (statusCode, err) => {
-      if (!err && statusCode === 200) {
+    helpers.verifyToken(data.headers.token, (statusCode, err, isAdmin) => {
+      if (!err && statusCode === 200 && isAdmin) {
         if (password) {
           preparedForUpdate.password = helpers.hash(password);
         }
@@ -147,8 +147,8 @@ users.deleteUser = (data, callback) => {
   const { username } = data.queryObject;
   const { token } = data.headers;
 
-  helpers.verifyToken(token, (_, err) => {
-    if (!err) {
+  helpers.verifyToken(token, (_, err, isAdmin) => {
+    if (!err && isAdmin) {
       _data.isExists("users", username, isExists => {
         if (isExists) {
           _data.delete("users", username, err => {
