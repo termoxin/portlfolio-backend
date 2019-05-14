@@ -80,15 +80,19 @@ class Project {
       src
     };
 
-    helpers.verifyToken(token, (statusCode, err, isAdmin) => {
+    helpers.verifyToken(token, async (statusCode, err, isAdmin) => {
       if (!err && statusCode === 200 && isAdmin) {
-        _data.update("projects", name, data, (err, data) => {
-          if (!err && data) {
-            callback(err, data, isAdmin);
-          } else {
-            callback(err);
-          }
-        });
+        try {
+          const result = await _data.promiseData(
+            "update",
+            "projects",
+            name,
+            data
+          );
+          callback(err, result, isAdmin);
+        } catch (err) {
+          callback(err);
+        }
       } else {
         callback(err);
       }
@@ -96,15 +100,14 @@ class Project {
   }
 
   static deleteProject(name, token, callback) {
-    helpers.verifyToken(token, (statusCode, err, isAdmin) => {
+    helpers.verifyToken(token, async (statusCode, err, isAdmin) => {
       if (!err && statusCode === 200 && isAdmin) {
-        _data.delete("projects", name, err => {
-          if (!err) {
-            callback(false);
-          } else {
-            callback(err);
-          }
-        });
+        try {
+          const result = await _data.promiseData("delete", "projects", name);
+          callback(false);
+        } catch (err) {
+          callback(err);
+        }
       } else {
         callback(err);
       }
