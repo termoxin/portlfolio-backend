@@ -28,6 +28,13 @@ _data.read = (collection, id, callback) => {
   });
 };
 
+_data.promiseData = (method, ...args) =>
+  new Promise((res, rej) => {
+    _data[method](...args, (err, data) => {
+      err ? rej(err) : res(data);
+    });
+  });
+
 // data.create creates a new record or a collection in .data
 _data.create = (collection, id, payload, callback) => {
   const payloadObject = JSON.stringify(payload);

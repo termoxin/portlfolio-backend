@@ -2,7 +2,7 @@ const _data = require("../libs/data");
 const helpers = require("../libs/helpers");
 
 class Project {
-  static getProject(name, callback) {
+  static async getProject(name, callback) {
     _data.read("projects", name, (err, data) => {
       if (!err && data) {
         callback(false, data);
@@ -10,29 +10,39 @@ class Project {
         callback(err);
       }
     });
+
+    try {
+      const data = await _data.promiseData("read", "projects", name);
+
+      callback(false, data);
+    } catch (err) {
+      callback(err);
+    }
   }
 
-  static getProjects(callback) {
-    let projectArray = [];
+  static async getProjects(callback) {
+    try {
+      let projectsArray = [];
 
-    _data.list("projects", (err, projects) => {
-      if (!err && projects) {
-        projects.forEach(project => {
-          _data.read("projects", project, (err, data) => {
-            if (!err && data) {
-              projectArray.push(data);
-              if (projects.length === projectArray.length) {
-                callback(projectArray);
-              }
-            } else {
-              callback(err);
-            }
-          });
+      const projectsList = await _data.promiseData("list", "projects");
+
+      if (projectsList) {
+        projectsList.forEach(async project => {
+          const currentProject = await _data.promiseData(
+            "read",
+            "projects",
+            project
+          );
+          projectsArray.push(currentProject);
+
+          if (projectsList.length === projectsArray.length) {
+            callback(projectsArray);
+          }
         });
-      } else {
-        callback(err);
       }
-    });
+    } catch (err) {
+      callback(err);
+    }
   }
 
   static createProject(name, description, img, src, callback) {
