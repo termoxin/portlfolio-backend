@@ -8,7 +8,7 @@ const availableContentTypes = {
 };
 
 const developmentConfig = {
-  PORT: 3000,
+  PORT: 4000,
   HOST: "localhost",
   availableContentTypes
 };

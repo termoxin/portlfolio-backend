@@ -51,9 +51,15 @@ server.requestHandler = (req, res) => {
   const address = url.parse(req.url);
   const queryObject = querystring.parse(address.query);
   const pathname = address.pathname.replace(/^\/+|\/+$/gi, "");
-  const method = req.method.toLowerCase();
+  let method = req.method.toLowerCase();
   const headers = req.headers;
   const availableMethods = ["get", "post", "put", "delete"];
+
+  console.log(method)
+
+  if(method === "options") {
+    method = "post";
+  }
 
   server.collectRequestData(req, body => {
     let data = {
@@ -86,8 +92,12 @@ server.requestHandler = (req, res) => {
 
         if (config.availableContentTypes.hasOwnProperty(contentType)) {
           res.writeHead(statusCode, {
-            "Content-Type": config.availableContentTypes[contentType]
+            "Content-Type": config.availableContentTypes[contentType],
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
+            "Access-Control-Allow-Headers": "*",
           });
+
           res.end(payload);
         }
 

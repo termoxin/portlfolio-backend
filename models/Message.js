@@ -41,6 +41,8 @@ class Message {
     email = typeof email === "string" ? email : false;
     message = message ? message : null;
 
+    console.log(name, email, message);
+
     try {
       const id = helpers.getRandomStr(20);
 
@@ -60,9 +62,7 @@ class Message {
           data
         );
 
-        if (!err) {
-          callback(false);
-        }
+         callback(false);
       } else {
         callback({ error: "Some fields are invalid or empty." });
       }

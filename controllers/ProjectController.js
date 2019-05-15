@@ -16,12 +16,10 @@ ProjectController.index = (data, callback) => {
       }
     });
   } else {
-    Project.getProjects((err, data) => {
-      if (!err && data) {
+    Project.getProjects((data) => {
+      if (data) {
         callback(200, data);
-      } else {
-        callback(500, err);
-      }
+      } 
     });
   }
 };
