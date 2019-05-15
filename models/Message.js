@@ -13,14 +13,22 @@ class Message {
       const messages = await _data.promiseData("list", "messages");
 
       messages.forEach(async message => {
-        const message = await _data.promise("read", "messsages", message);
-
-        if (message) {
-          messagesArray.push(message);
-        }
+        const messageData = await _data.promiseData(
+          "read",
+          "messages",
+          message
+        );
 
         if (messages.length === messagesArray.length) {
           callback(false, messagesArray);
+        }
+
+        if (messageData) {
+          messagesArray.push(messageData);
+
+          if (messages.length === messagesArray.length) {
+            callback(false, messagesArray);
+          }
         }
       });
     } catch (err) {
@@ -45,7 +53,12 @@ class Message {
           status: false
         };
 
-        const data = await _data.promiseData("create", "messages", id, data);
+        const messagesData = await _data.promiseData(
+          "create",
+          "messages",
+          id,
+          data
+        );
 
         if (!err) {
           callback(false);
