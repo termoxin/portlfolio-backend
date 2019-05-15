@@ -7,27 +7,25 @@ class Message {
    *
    */
 
-  static getMessages(callback) {
-    let messageArray = [];
+  static async getMessages(callback) {
+    let messagesArray = [];
+    try {
+      const messages = await _data.promiseData("list", "messages");
 
-    _data.list("messages", (err, messages) => {
-      if (!err && messages) {
-        messages.forEach(message => {
-          _data.read("messages", message, (err, data) => {
-            if (!err && data) {
-              messageArray.push(data);
-              if (messages.length === messageArray.length) {
-                callback(false, messageArray);
-              }
-            } else {
-              callback(err);
-            }
-          });
-        });
-      } else {
-        callback(err);
-      }
-    });
+      messages.forEach(async message => {
+        const message = await _data.promise("read", "messsages", message);
+
+        if (message) {
+          messagesArray.push(message);
+        }
+
+        if (messages.length === messagesArray.length) {
+          callback(false, messagesArray);
+        }
+      });
+    } catch (err) {
+      callback(err);
+    }
   }
 
   static createMessage(name, email, message, callback) {
