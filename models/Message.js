@@ -28,42 +28,44 @@ class Message {
     }
   }
 
-  static createMessage(name, email, message, callback) {
+  static async createMessage(name, email, message, callback) {
     name = typeof name === "string" && name.length >= 3 ? name : false;
     email = typeof email === "string" ? email : false;
     message = message ? message : null;
 
-    const id = helpers.getRandomStr(20);
+    try {
+      const id = helpers.getRandomStr(20);
 
-    if (name && email && message) {
-      const data = {
-        id,
-        name,
-        email,
-        message,
-        status: false
-      };
+      if (name && email && message) {
+        const data = {
+          id,
+          name,
+          email,
+          message,
+          status: false
+        };
 
-      _data.create("messages", id, data, err => {
+        const data = await _data.promiseData("create", "messages", id, data);
+
         if (!err) {
           callback(false);
-        } else {
-          callback(err);
         }
-      });
-    } else {
-      callback({ error: "Some fields are invalid or empty." });
+      } else {
+        callback({ error: "Some fields are invalid or empty." });
+      }
+    } catch (err) {
+      callback(err);
     }
   }
 
-  static deleteMessage(id, callback) {
-    _data.delete("messages", id, err => {
-      if (!err) {
-        callback(false);
-      } else {
-        callback(err);
-      }
-    });
+  static async deleteMessage(id, callback) {
+    try {
+      const data = await _data.promiseData("delete", "messages", id);
+
+      if (!err) callback(false);
+    } catch (err) {
+      callback(err);
+    }
   }
 }
 
