@@ -40,9 +40,6 @@ class Message {
     name = typeof name === "string" && name.length >= 3 ? name : false;
     email = typeof email === "string" ? email : false;
     message = message ? message : null;
-
-    console.log(name, email, message);
-
     try {
       const id = helpers.getRandomStr(20);
 

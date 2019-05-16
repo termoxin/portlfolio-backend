@@ -161,21 +161,27 @@ helpers.hash = (str, alg = "md5") => {
 helpers.verifyToken = (token, callback) => {
   if (token) {
     _data.read("tokens", token, (err, data) => {
+      if(!err && data) {
       _data.read("users", data.username, (err, { isAdmin }) => {
-        if (isAdmin) {
-          if (!err && data) {
-            if (data.date > +new Date()) {
-              callback(200, false, isAdmin);
+          if (isAdmin) {
+            if (!err && data) {
+              if (data.date > +new Date()) {
+                callback(200, false, isAdmin);
+              } else {
+                callback(400, { error: "The token is expired." });
+              }
             } else {
-              callback(400, { error: "The token is expired." });
+              callback(404, { error: "The token does not exist." });
             }
           } else {
-            callback(404, { error: "The token does not exist." });
+            callback(500, { error: "Forbidden. You don't have an access." });
           }
-        } else {
-          callback(500, { error: "Forbidden. You don't have an access." });
-        }
-      });
+        });
+      } else {
+        callback(404, {error: "Could not find the token."})
+      }
+
+      
     });
   } else {
     callback({ error: "The username or token are invalid or empty." });
