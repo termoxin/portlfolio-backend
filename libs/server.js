@@ -55,8 +55,6 @@ server.requestHandler = (req, res) => {
   const headers = req.headers;
   const availableMethods = ["get", "post", "put", "delete"];
 
-  console.log(method)
-
   if(method === "options") {
     method = "post";
   }
@@ -94,8 +92,8 @@ server.requestHandler = (req, res) => {
           res.writeHead(statusCode, {
             "Content-Type": config.availableContentTypes[contentType],
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
-            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
+            "Access-Control-Allow-Headers": "*"
           });
 
           res.end(payload);

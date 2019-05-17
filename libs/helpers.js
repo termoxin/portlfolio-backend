@@ -78,6 +78,16 @@ helpers.getAssetsData = (fileName, callback) => {
         contentType = "svg";
       }
 
+      if(fileName.indexOf(".jpg") > -1 || fileName.indexOf(".jpeg") > -1) {
+        contentType = "jpg";
+      }
+
+      if(fileName.indexOf(".png") > -1) {
+        contentType = "png";
+      }
+
+      console.log(data);
+
       callback(false, data.toString(), contentType);
     } else {
       callback("There is no such file or directory.");

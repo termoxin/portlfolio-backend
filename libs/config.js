@@ -4,7 +4,9 @@ const availableContentTypes = {
   plain: "text/plain",
   js: "text/javascript",
   css: "text/css",
-  svg: "image/svg+xml"
+  svg: "image/svg+xml",
+  jpg: "image/jpeg",
+  png: "image/png"
 };
 
 const developmentConfig = {
