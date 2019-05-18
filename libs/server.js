@@ -82,9 +82,9 @@ server.requestHandler = (req, res) => {
 
       chosenHandler(data, (statusCode, payload, contentType) => {
         payload =
-          typeof payload === "string" && typeof payload !== "undefined"
+          typeof payload !== "undefined"
             ? payload
-            : JSON.stringify(payload);
+            : {};
 
         contentType = typeof contentType === "string" ? contentType : "json";
 

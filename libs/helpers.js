@@ -1,6 +1,5 @@
 // Dependencies
 
-const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
@@ -10,6 +9,7 @@ helpers.baseDir = path.join(__dirname, "/../templates");
 module.exports = helpers;
 
 const _data = require("./data");
+const fs = require("fs");
 
 helpers.addUniversalTemplate = (name, payload, callback) => {
   helpers.getTemplate("_header", payload, (err, headerData) => {
@@ -86,9 +86,7 @@ helpers.getAssetsData = (fileName, callback) => {
         contentType = "png";
       }
 
-      console.log(data);
-
-      callback(false, data.toString(), contentType);
+      callback(false, data, contentType);
     } else {
       callback("There is no such file or directory.");
     }
