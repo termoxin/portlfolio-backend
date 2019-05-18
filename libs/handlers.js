@@ -18,9 +18,8 @@ handlers.public = (data, callback) => {
   });
 };
 
-handlers.uploadFile = (data, callback, req) => {
-
-	callback(200, data);
-}
+handlers.uploadFile = (data, callback) => {
+  callback(200, data.body);
+};
 
 module.exports = handlers;

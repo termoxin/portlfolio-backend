@@ -27,64 +27,55 @@ server.httpServer = () => {
 };
 
 server.collectRequestData = (req, res, callback) => {
-  if(req.url === "/api/uploadFile") {
 
-    const form = new formidable.IncomingForm();
+    if (req.url === "/api/uploadFile") {
+      const form = new formidable.IncomingForm();
 
-    form.uploadDir = path.join(__dirname, '../public/img');
-    form.keepExtensions = true;
-    
-      form.on('fileBegin', function (name, file){
-         
+      form.uploadDir = path.join(__dirname, "../public/img");
+      form.keepExtensions = true;
+
+      form.on("fileBegin", function(name, file) {
+
       });
 
-      form.on('progress', function(bytesReceived, bytesExpected) {
-        // console.log(bytesReceived + "/" + bytesExpected)
+      form.on("progress", function(bytesReceived, bytesExpected) {});
+
+      form.on("file", function(name, file) {
+        fs.renameSync(file.path, form.uploadDir + "/" + "avatar.jpg");
       });
 
-
-     form.on('file', function (name, file){
-          console.log(file);
-          fs.renameSync(file.path, form.uploadDir + "/" + file.name );
+      form.on("aborted", function(err) {
+        callback({ file: "ERROR!" })
       });
 
-     form.on('aborted', function(err) {
-          console.log("user aborted upload");
+      form.on("end", function() {
+       callback({ file: "OK!" })
       });
 
-      form.on('end', function() {
-          console.log('-> upload done');
-      });
-
-
-
-    form.parse(req, () => {
-
-    });
+    form.parse(req);
   } else {
     const FORM_URLENCODED = "application/x-www-form-urlencoded";
-  const APPLICATION_JSON = "application/json";
+    const APPLICATION_JSON = "application/json";
 
-  const decoder = new StringDecoder("utf8");
+    const decoder = new StringDecoder("utf8");
 
-  if (
-    req.headers["content-type"] === FORM_URLENCODED ||
-    req.headers["content-type"] === APPLICATION_JSON
-  ) {
-    let body = "";
-    req.on("data", chunk => {
+    if (
+      req.headers["content-type"] === FORM_URLENCODED ||
+      req.headers["content-type"] === APPLICATION_JSON
+    ) {
+      let body = "";
+      req.on("data", chunk => {
+        body += chunk;
+      });
 
-      body += chunk
-    });
+      req.on("end", () => {
+        body = typeof body === "string" ? helpers.parseJSONtoObject(body) : {};
 
-    req.on("end", () => {
-      body = typeof body === "string" ? helpers.parseJSONtoObject(body) : {};
-
-      callback(body);
-    });
-  } else {
-    callback({});
-  }
+        callback(body);
+      });
+    } else {
+      callback({});
+    }
   }
 };
 
@@ -96,7 +87,7 @@ server.requestHandler = (req, res) => {
   const headers = req.headers;
   const availableMethods = ["get", "post", "put", "delete"];
 
-  if(method === "options") {
+  if (method === "options") {
     method = "post";
   }
 
@@ -122,12 +113,12 @@ server.requestHandler = (req, res) => {
           : chosenHandler;
 
       chosenHandler(data, (statusCode, payload, contentType) => {
-        payload =
-          typeof payload !== "undefined"
-            ? payload
-            : {};
+        payload = typeof payload !== "undefined" ? payload : {};
 
-       payload = !Buffer.isBuffer(payload) && typeof payload === "object"  ? JSON.stringify(payload) : payload;
+        payload =
+          !Buffer.isBuffer(payload) && typeof payload === "object"
+            ? JSON.stringify(payload)
+            : payload;
 
         contentType = typeof contentType === "string" ? contentType : "json";
 
