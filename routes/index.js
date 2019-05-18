@@ -6,6 +6,9 @@ const messages = require("./messages");
 const router = require("../libs/router");
 const tokens = require("../libs/api").tokens;
 const users = require("../libs/api").users;
+const handlers = require("../libs/handlers");
+
+router.post("api/uploadFile", handlers.uploadFile);
 
 router.get("api/tokens", tokens.getToken);
 router.post("api/tokens", tokens.createToken);

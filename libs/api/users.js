@@ -81,7 +81,7 @@ users.createUser = (data, callback) => {
 
 users.updateUser = (data, callback) => {
   let preparedForUpdate = {};
-  let { username, newUserName, lastName, firstName, password } = data.body;
+  let { username, newUserName, lastName, firstName, password, photo } = data.body;
 
   if (data.headers.token) {
     helpers.verifyToken(data.headers.token, (statusCode, err, isAdmin) => {
@@ -99,6 +99,10 @@ users.updateUser = (data, callback) => {
 
         if (!username) {
           callback(400, { error: "The username was missed." });
+        }
+
+        if(photo) {
+          preparedForUpdate.photo = photo;
         }
 
         if (newUserName) {

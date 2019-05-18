@@ -3,6 +3,9 @@ const url = require("url");
 const { StringDecoder } = require("string_decoder");
 const querystring = require("querystring");
 const util = require("util");
+const formidable = require("formidable");
+const path = require("path");
+const fs = require("fs");
 const debug = util.debuglog("server");
 const config = require("./config");
 const handlers = require("./handlers");
@@ -23,27 +26,65 @@ server.httpServer = () => {
   });
 };
 
-server.collectRequestData = (request, callback) => {
-  const FORM_URLENCODED = "application/x-www-form-urlencoded";
+server.collectRequestData = (req, res, callback) => {
+  if(req.url === "/api/uploadFile") {
+
+    const form = new formidable.IncomingForm();
+
+    form.uploadDir = path.join(__dirname, '../public/img');
+    form.keepExtensions = true;
+    
+      form.on('fileBegin', function (name, file){
+         
+      });
+
+      form.on('progress', function(bytesReceived, bytesExpected) {
+        // console.log(bytesReceived + "/" + bytesExpected)
+      });
+
+
+     form.on('file', function (name, file){
+          console.log(file);
+          fs.renameSync(file.path, form.uploadDir + "/" + file.name );
+      });
+
+     form.on('aborted', function(err) {
+          console.log("user aborted upload");
+      });
+
+      form.on('end', function() {
+          console.log('-> upload done');
+      });
+
+
+
+    form.parse(req, () => {
+
+    });
+  } else {
+    const FORM_URLENCODED = "application/x-www-form-urlencoded";
   const APPLICATION_JSON = "application/json";
 
   const decoder = new StringDecoder("utf8");
 
   if (
-    request.headers["content-type"] === FORM_URLENCODED ||
-    request.headers["content-type"] === APPLICATION_JSON
+    req.headers["content-type"] === FORM_URLENCODED ||
+    req.headers["content-type"] === APPLICATION_JSON
   ) {
     let body = "";
-    request.on("data", chunk => {
-      body += decoder.write(chunk);
+    req.on("data", chunk => {
+
+      body += chunk
     });
 
-    request.on("end", () => {
+    req.on("end", () => {
       body = typeof body === "string" ? helpers.parseJSONtoObject(body) : {};
+
       callback(body);
     });
   } else {
     callback({});
+  }
   }
 };
 
@@ -59,7 +100,7 @@ server.requestHandler = (req, res) => {
     method = "post";
   }
 
-  server.collectRequestData(req, body => {
+  server.collectRequestData(req, res, body => {
     let data = {
       address,
       body,
@@ -85,6 +126,8 @@ server.requestHandler = (req, res) => {
           typeof payload !== "undefined"
             ? payload
             : {};
+
+       payload = !Buffer.isBuffer(payload) && typeof payload === "object"  ? JSON.stringify(payload) : payload;
 
         contentType = typeof contentType === "string" ? contentType : "json";
 
