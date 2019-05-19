@@ -32,9 +32,9 @@ tokens.createToken = (data, callback) => {
   username = username && username.trim().length > 3 ? username : false;
   password = password && password.trim().length >= 6 ? password : false;
 
-
   if (username && password) {
     _data.read("users", username, (err, data) => {
+        console.log(username);
       const hashedPassword = helpers.hash(password);
       if (!err && data && hashedPassword === data.password) {
         const id = helpers.getRandomStr(20);

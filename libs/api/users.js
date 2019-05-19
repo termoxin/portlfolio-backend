@@ -86,8 +86,10 @@ users.updateUser = (data, callback) => {
   if (data.headers.token) {
     helpers.verifyToken(data.headers.token, (statusCode, err, isAdmin) => {
       if (!err && statusCode === 200 && isAdmin) {
-        if (password) {
+        if (password && password.length >= 6) {
           preparedForUpdate.password = helpers.hash(password);
+        } else {
+          callback(500, { error: "Password is empty or less than 6 characters." })
         }
 
         if (lastName) {
@@ -105,6 +107,8 @@ users.updateUser = (data, callback) => {
           preparedForUpdate.photo = photo;
         }
 
+        console.log(newUserName);
+
         if (newUserName) {
           _data.isExists("users", newUserName, isExists => {
             if (!isExists) {
@@ -120,13 +124,15 @@ users.updateUser = (data, callback) => {
             if (!err && data) {
               delete data.password;
 
-              _data.rename("users", username, newUserName, err => {
-                if (!err) {
-                  callback(200);
-                } else {
-                  callback(500);
-                }
-              });
+              if(newUserName) {
+                  _data.rename("users", username, newUserName, err => {
+                  if (!err) {
+                    callback(200);
+                  } else {
+                    callback(500);
+                  }
+                });
+              }
 
               callback(202, data);
             } else {
