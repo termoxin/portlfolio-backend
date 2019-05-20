@@ -52,7 +52,12 @@ class Project {
     src = src ? src : null;
     type = type ? type : null;
 
+
+    const id = helpers.getRandomStr(20);
+
+
     const data = {
+      id,
       name,
       description,
       img,
