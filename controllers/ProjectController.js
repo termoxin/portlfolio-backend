@@ -25,9 +25,9 @@ ProjectController.index = (data, callback) => {
 };
 
 ProjectController.store = (data, callback) => {
-  const { name, description, img, src } = data.body;
+  const { name, description, img, src, type } = data.body;
 
-  Project.createProject(name, description, img, src, err => {
+  Project.createProject(name, description, img, type, src, err => {
     if (!err) {
       callback(202);
     } else {

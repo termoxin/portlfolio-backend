@@ -45,17 +45,19 @@ class Project {
     }
   }
 
-  static createProject(name, description, img, src, callback) {
+  static createProject(name, description, img, type, src, callback) {
     name = typeof name === "string" && name.length >= 3 ? name : "";
     description = typeof description === "string" ? description : "";
     img = img ? img : null;
     src = src ? src : null;
+    type = type ? type : null;
 
     const data = {
       name,
       description,
       img,
-      src
+      src,
+      type
     };
 
     _data.create("projects", name, data, err => {
