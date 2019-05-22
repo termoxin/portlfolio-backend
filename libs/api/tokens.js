@@ -45,7 +45,13 @@ tokens.createToken = (data, callback) => {
         };
 
         _data.create("tokens", id, data, err => {
-          if (!err) callback(200, data);
+          if (!err) {
+            callback(200, data)
+          }
+          else {
+            callback(500, err);
+          }
+
         });
       } else {
         callback(500, {

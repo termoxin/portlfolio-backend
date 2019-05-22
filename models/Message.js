@@ -12,6 +12,10 @@ class Message {
     try {
       const messages = await _data.promiseData("list", "messages");
 
+      if(!messages.length) {
+        callback(false, [])
+      }
+
       messages.forEach(async message => {
         const messageData = await _data.promiseData(
           "read",
@@ -37,9 +41,12 @@ class Message {
   }
 
   static async createMessage(name, email, message, callback) {
+
     name = typeof name === "string" && name.length >= 3 ? name : false;
     email = typeof email === "string" ? email : false;
     message = message ? message : null;
+
+
     try {
       const id = helpers.getRandomStr(20);
 

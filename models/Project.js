@@ -26,6 +26,10 @@ class Project {
 
       const projectsList = await _data.promiseData("list", "projects");
 
+      if(!projectsList.length) {
+        callback(false, [])
+      }
+
       if (projectsList) {
         projectsList.forEach(async project => {
           const currentProject = await _data.promiseData(
@@ -36,7 +40,7 @@ class Project {
           projectsArray.push(currentProject);
 
           if (projectsList.length === projectsArray.length) {
-            callback(projectsArray);
+            callback(false, projectsArray);
           }
         });
       }
