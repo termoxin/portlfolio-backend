@@ -57,25 +57,29 @@ class Project {
     type = type ? type : null;
 
 
-    const id = helpers.getRandomStr(20);
+    if(name && description && type) {
+      const id = helpers.getRandomStr(20);
 
 
-    const data = {
-      id,
-      name,
-      description,
-      img,
-      src,
-      type
-    };
+      const data = {
+        id,
+        name,
+        description,
+        img,
+        src,
+        type
+      };
 
-    _data.create("projects", name, data, err => {
-      if (!err) {
-        callback(false);
-      } else {
-        callback(err);
-      }
-    });
+      _data.create("projects", name, data, err => {
+        if (!err) {
+          callback(false);
+        } else {
+          callback(err);
+        }
+      });
+    } else {
+      callback({ error: "Some fields are invalid or empty." })
+    }
   }
 
   static updateProject(name, description, img, src, token, callback) {

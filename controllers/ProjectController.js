@@ -16,7 +16,7 @@ ProjectController.index = (data, callback) => {
       }
     });
   } else {
-    Project.getProjects((err,ata) => {
+    Project.getProjects((err,data) => {
       if (!err && data) {
         callback(200, data);
       } 
