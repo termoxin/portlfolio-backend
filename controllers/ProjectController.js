@@ -57,7 +57,7 @@ ProjectController.delete = (data, callback) => {
     if (!err) {
       callback(204);
     } else {
-      callback(err);
+      callback(500, err);
     }
   });
 };
