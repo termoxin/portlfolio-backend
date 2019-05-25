@@ -75,11 +75,40 @@ class Message {
     }
   }
 
+  static async updateMessage(id, token, callback) {
+    helpers.verifyToken(token, async (statusCode, err, isAdmin) => {
+      if (!err && statusCode === 200 && isAdmin) {
+        try {
+
+          const message = await _data.promiseData("read", "messages", id);
+
+          const result = await _data.promiseData(
+            "update",
+            "messages",
+            id,
+            { status: !message.status }
+
+          );
+          
+          callback(err, result, isAdmin);
+        } catch (err) {
+          callback(err);
+        }
+      } else {
+        callback(err);
+      }
+    });
+  }
+
+
   static async deleteMessage(id, callback) {
     try {
       const data = await _data.promiseData("delete", "messages", id);
 
-      if (!err) callback(false);
+      if (!err) {
+        callback(false);
+      }
+
     } catch (err) {
       callback(err);
     }

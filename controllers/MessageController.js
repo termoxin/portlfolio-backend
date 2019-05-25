@@ -26,6 +26,21 @@ MessageController.store = (data, callback) => {
   });
 };
 
+MessageController.update = (data, callback) => {
+  const { id } = data.queryObject;
+  const { token } = data.headers;
+
+  console.log(id);
+
+  Message.updateMessage(id, token, (err, data) => {
+    if (!err) {
+      callback(202);
+    } else {
+      callback(500, err);
+    }
+  });
+};
+
 MessageController.delete = (data, callback) => {
   const { id } = data.queryObject;
 
