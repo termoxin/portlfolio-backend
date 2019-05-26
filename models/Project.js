@@ -49,11 +49,11 @@ class Project {
     }
   }
 
-  static createProject(name, description, img, type, src, callback) {
+  static createProject(name, description, image, type, source, callback) {
     name = typeof name === "string" && name.length >= 3 ? name : "";
     description = typeof description === "string" ? description : "";
-    img = img ? img : null;
-    src = src ? src : null;
+    image = image ? image : null;
+    source = source ? source : null;
     type = type ? type : null;
 
 
@@ -65,8 +65,8 @@ class Project {
         id,
         name,
         description,
-        img,
-        src,
+        image,
+        source,
         type
       };
 

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_DEBUG=server nodemon index.js"
+    "start": "NODE_DEBUG=server nodemon index.js",
+    "test": "node tests"
   },
   "repository": {
     "type": "git",

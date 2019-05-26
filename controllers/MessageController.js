@@ -30,8 +30,6 @@ MessageController.update = (data, callback) => {
   const { id } = data.queryObject;
   const { token } = data.headers;
 
-  console.log(id);
-
   Message.updateMessage(id, token, (err, data) => {
     if (!err) {
       callback(202);
