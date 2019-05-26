@@ -1,8 +1,17 @@
-const token = "5hkrr73zgw01cmq91m3q";
+const querystring = require("querystring");
+
+const token = querystring.stringify({ token: "7dlmfepms2q2v9xgvfgs" });
 
 const user = {
   username: "admin",
   password: "123123"
 };
 
-module.exports = { token, user };
+const userMockup = {
+  username: "test",
+  firstName: "Testing",
+  lastName: "Testonov",
+  password: "123123test"
+};
+
+module.exports = { token, user, userMockup };

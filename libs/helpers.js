@@ -78,11 +78,11 @@ helpers.getAssetsData = (fileName, callback) => {
         contentType = "svg";
       }
 
-      if(fileName.indexOf(".jpg") > -1 || fileName.indexOf(".jpeg") > -1) {
+      if (fileName.indexOf(".jpg") > -1 || fileName.indexOf(".jpeg") > -1) {
         contentType = "jpg";
       }
 
-      if(fileName.indexOf(".png") > -1) {
+      if (fileName.indexOf(".png") > -1) {
         contentType = "png";
       }
 
@@ -169,8 +169,8 @@ helpers.hash = (str, alg = "md5") => {
 helpers.verifyToken = (token, callback) => {
   if (token) {
     _data.read("tokens", token, (err, data) => {
-      if(!err && data) {
-      _data.read("users", data.username, (err, { isAdmin }) => {
+      if (!err && data) {
+        _data.read("users", data.username, (err, { isAdmin }) => {
           if (isAdmin) {
             if (!err && data) {
               if (data.date > +new Date()) {
@@ -186,10 +186,8 @@ helpers.verifyToken = (token, callback) => {
           }
         });
       } else {
-        callback(404, {error: "Could not find the token."})
+        callback(404, { error: "Could not find the token." });
       }
-
-      
     });
   } else {
     callback({ error: "The username or token are invalid or empty." });
