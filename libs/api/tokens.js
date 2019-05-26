@@ -34,7 +34,6 @@ tokens.createToken = (data, callback) => {
 
   if (username && password) {
     _data.read("users", username, (err, data) => {
-        console.log(username);
       const hashedPassword = helpers.hash(password);
       if (!err && data && hashedPassword === data.password) {
         const id = helpers.getRandomStr(20);
@@ -46,12 +45,10 @@ tokens.createToken = (data, callback) => {
 
         _data.create("tokens", id, data, err => {
           if (!err) {
-            callback(200, data)
-          }
-          else {
+            callback(200, data);
+          } else {
             callback(500, err);
           }
-
         });
       } else {
         callback(500, {

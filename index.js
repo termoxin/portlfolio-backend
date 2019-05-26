@@ -14,3 +14,5 @@ app.init = callback => {
 if (require.main === module) {
   app.init(() => {});
 }
+
+module.exports = app;
