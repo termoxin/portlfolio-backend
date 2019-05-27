@@ -26,8 +26,8 @@ class Project {
 
       const projectsList = await _data.promiseData("list", "projects");
 
-      if(!projectsList.length) {
-        callback(false, [])
+      if (!projectsList.length) {
+        callback(false, []);
       }
 
       if (projectsList) {
@@ -56,10 +56,8 @@ class Project {
     source = source ? source : null;
     type = type ? type : null;
 
-
-    if(name && description && type) {
+    if (name && description && type) {
       const id = helpers.getRandomStr(20);
-
 
       const data = {
         id,
@@ -78,7 +76,7 @@ class Project {
         }
       });
     } else {
-      callback({ error: "Some fields are invalid or empty." })
+      callback({ error: "Some fields are invalid or empty." });
     }
   }
 
@@ -108,6 +106,30 @@ class Project {
         } catch (err) {
           callback(err);
         }
+      } else {
+        callback(err);
+      }
+    });
+  }
+
+  static updateProjects(projects, token, callback) {
+    projects = projects.length ? projects : [];
+
+    helpers.verifyToken(token, (statusCode, err, isAdmin) => {
+      if (!err && statusCode === 200 && isAdmin) {
+        projects.forEach(async project => {
+          try {
+            const result = await _data.promiseData(
+              "update",
+              "projects",
+              project.name,
+              project
+            );
+            callback(false, result, isAdmin);
+          } catch (err) {
+            callback(err);
+          }
+        });
       } else {
         callback(err);
       }

@@ -40,7 +40,7 @@ ProjectController.update = (data, callback) => {
   const { name, description, img, src } = data.body;
   const { token } = data.headers;
 
-  Project.updateProject(name, description, img, src, token, (err, data) => {
+  Project.updateProject(name, description, img, src, token, (err) => {
     if (!err) {
       callback(200);
     } else {
@@ -53,7 +53,13 @@ ProjectController.updateSome = (data, callback) => {
   const { projects } = data.body;
   const { token } = data.headers;
 
-  callback(200, projects)
+  Project.updateProjects(projects, token, (err, data) => {
+    if(!err) {
+      callback(202)
+    } else {
+      callback(500, err);
+    }
+  })
 };
 
 ProjectController.delete = (data, callback) => {

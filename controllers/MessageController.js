@@ -27,7 +27,7 @@ MessageController.store = (data, callback) => {
 };
 
 MessageController.update = (data, callback) => {
-  const { id } = data.queryObject;
+  const { id } = data.body;
   const { token } = data.headers;
 
   Message.updateMessage(id, token, (err, data) => {
