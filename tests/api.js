@@ -34,15 +34,15 @@ helpers.request = (path, method = "GET", data = {}, callback) => {
   req.end();
 };
 
-api["api/tokens respond to GET with 200"] = done => {
-  helpers.request("/api/tokens?" + token, "GET", {}, res => {
+api["api/tokens respond to POST with 200"] = done => {
+  helpers.request("/api/tokens", "POST", user, res => {
     assert.equal(res.statusCode, 200);
     done();
   });
 };
 
-api["api/tokens respond to POST with 200"] = done => {
-  helpers.request("/api/tokens", "POST", user, res => {
+api["api/tokens respond to GET with 200"] = done => {
+  helpers.request("/api/tokens?" + token, "GET", {}, res => {
     assert.equal(res.statusCode, 200);
     done();
   });
@@ -60,6 +60,13 @@ api["api/tokens respond to PUT with 202"] = done => {
   );
 };
 
+api["api/users respond to POST with 201"] = done => {
+  helpers.request("/api/users", "POST", userMockup, res => {
+    assert.equal(res.statusCode, 201);
+    done();
+  });
+};
+
 api["api/users respond to GET with 200"] = done => {
   const username = querystring.stringify({ username: user.username });
 
@@ -72,13 +79,6 @@ api["api/users respond to GET with 200"] = done => {
       done();
     }
   );
-};
-
-api["api/users respond to POST with 201"] = done => {
-  helpers.request("/api/users", "POST", userMockup, res => {
-    assert.equal(res.statusCode, 201);
-    done();
-  });
 };
 
 api["api/users respond to PUT with 202"] = done => {

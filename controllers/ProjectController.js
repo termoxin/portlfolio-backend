@@ -49,6 +49,13 @@ ProjectController.update = (data, callback) => {
   });
 };
 
+ProjectController.updateSome = (data, callback) => {
+  const { projects } = data.body;
+  const { token } = data.headers;
+
+  callback(200, projects)
+};
+
 ProjectController.delete = (data, callback) => {
   const { name } = data.queryObject;
   const { token } = data.headers;
