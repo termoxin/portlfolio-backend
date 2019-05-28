@@ -34,91 +34,102 @@ helpers.request = (path, method = "GET", data = {}, callback) => {
   req.end();
 };
 
-api["api/tokens respond to POST with 200"] = done => {
-  helpers.request("/api/tokens", "POST", user, res => {
-    assert.equal(res.statusCode, 200);
-    done();
+// api["api/tokens respond to POST with 200"] = done => {
+//   helpers.request("/api/tokens", "POST", user, res => {
+//     assert.equal(res.statusCode, 200);
+//     done();
+//   });
+// };
+
+describe("API", () => {
+  describe("/api/tokens", () => {
+    it("/api/tokens respond to POST with 200", done => {
+      helpers.request("/api/tokens", "POST", user, res => {
+        assert.equal(res.statusCode, 200);
+        done();
+      });
+    });
   });
-};
+});
 
-api["api/tokens respond to GET with 200"] = done => {
-  helpers.request("/api/tokens?" + token, "GET", {}, res => {
-    assert.equal(res.statusCode, 200);
-    done();
-  });
-};
+// api["api/tokens respond to GET with 200"] = done => {
+//   helpers.request("/api/tokens?" + token, "GET", {}, res => {
+//     assert.equal(res.statusCode, 200);
+//     done();
+//   });
+// };
 
-api["api/tokens respond to PUT with 202"] = done => {
-  helpers.request(
-    "/api/tokens",
-    "PUT",
-    { token: token.split("=")[1].trim() },
-    res => {
-      assert.equal(res.statusCode, 202);
-      done();
-    }
-  );
-};
+// api["api/tokens respond to PUT with 202"] = done => {
+//   helpers.request(
+//     "/api/tokens",
+//     "PUT",
+//     { token: token.split("=")[1].trim() },
+//     res => {
+//       assert.equal(res.statusCode, 202);
+//       done();
+//     }
+//   );
+// };
 
-api["api/users respond to POST with 201"] = done => {
-  helpers.request("/api/users", "POST", userMockup, res => {
-    assert.equal(res.statusCode, 201);
-    done();
-  });
-};
+// api["api/users respond to POST with 201"] = done => {
+//   helpers.request("/api/users", "POST", userMockup, res => {
+//     assert.equal(res.statusCode, 201);
+//     done();
+//   });
+// };
 
-api["api/users respond to GET with 200"] = done => {
-  const username = querystring.stringify({ username: user.username });
+// api["api/users respond to GET with 200"] = done => {
+//   const username = querystring.stringify({ username: user.username });
 
-  helpers.request(
-    "/api/users?" + username,
-    "GET",
-    { token: token.split("=")[1].trim() },
-    res => {
-      assert.equal(res.statusCode, 200);
-      done();
-    }
-  );
-};
+//   helpers.request(
+//     "/api/users?" + username,
+//     "GET",
+//     { token: token.split("=")[1].trim() },
+//     res => {
+//       assert.equal(res.statusCode, 200);
+//       done();
+//     }
+//   );
+// };
 
-api["api/users respond to PUT with 202"] = done => {
-  const actualToken = token.split("=")[1].trim();
+// api["api/users respond to PUT with 202"] = done => {
+//   const actualToken = token.split("=")[1].trim();
 
-  helpers.request(
-    "/api/users",
-    "PUT",
-    {
-      token: actualToken,
-      username: userMockup.username,
-      password: "newpassword321"
-    },
-    res => {
-      assert.equal(res.statusCode, 202);
-      done();
-    }
-  );
-};
+//   helpers.request(
+//     "/api/users",
+//     "PUT",
+//     {
+//       token: actualToken,
+//       username: userMockup.username,
+//       password: "newpassword321"
+//     },
+//     res => {
+//       assert.equal(res.statusCode, 202);
+//       done();
+//     }
+//   );
+// };
 
-api["api/users respond to DELETE with 202"] = done => {
-  const actualToken = token.split("=")[1].trim();
-  const username = querystring.stringify({ username: userMockup.username });
+// api["api/users respond to DELETE with 202"] = done => {
+//   const actualToken = token.split("=")[1].trim();
+//   const username = querystring.stringify({ username: userMockup.username });
 
-  helpers.request(
-    "/api/users?" + username,
-    "DELETE",
-    { token: actualToken },
-    res => {
-      assert.equal(res.statusCode, 204);
-      done();
-    }
-  );
-};
+//   helpers.request(
+//     "/api/users?" + username,
+//     "DELETE",
+//     { token: actualToken },
+//     res => {
+//       assert.equal(res.statusCode, 204);
+//       done();
+//     }
+//   );
+// };
 
-api["api/tokens respond to DELETE with 204"] = done => {
-  helpers.request("/api/tokens?" + token, "DELETE", {}, res => {
-    assert.equal(res.statusCode, 204);
-    done();
-  });
-};
+// api["api/tokens respond to DELETE with 204"] = done => {
+//   helpers.request("/api/tokens?" + token, "DELETE", {}, res => {
+//     assert.equal(res.statusCode, 204);
+//     done();
+//   });
+// };
 
-module.exports = api;
+// module.exports = api;

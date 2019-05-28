@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_DEBUG=server nodemon index.js",
-    "test": "node tests"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/termoxin/portlfolio-backend#readme",
   "dependencies": {
-    "formidable": "^1.2.1"
+    "formidable": "^1.2.1",
+    "mocha": "^6.1.4"
   }
 }
