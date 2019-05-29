@@ -8,6 +8,12 @@ const user = {
   password: "123123"
 };
 
+const projectMockup = {
+  name: "Test",
+  description: "Test project",
+  type: "js"
+};
+
 const userMockup = {
   username: "test",
   firstName: "Testing",
@@ -15,4 +21,4 @@ const userMockup = {
   password: "123123test"
 };
 
-module.exports = { tokenRequest, token, user, userMockup };
+module.exports = { tokenRequest, token, user, userMockup, projectMockup };

@@ -16,10 +16,10 @@ ProjectController.index = (data, callback) => {
       }
     });
   } else {
-    Project.getProjects((err,data) => {
+    Project.getProjects((err, data) => {
       if (!err && data) {
         callback(200, data);
-      } 
+      }
     });
   }
 };
@@ -37,12 +37,12 @@ ProjectController.store = (data, callback) => {
 };
 
 ProjectController.update = (data, callback) => {
-  const { name, description, img, src } = data.body;
+  const { name, description, image, source } = data.body;
   const { token } = data.headers;
 
-  Project.updateProject(name, description, img, src, token, (err) => {
+  Project.updateProject(name, description, image, source, token, err => {
     if (!err) {
-      callback(200);
+      callback(202);
     } else {
       callback(500, err);
     }
@@ -54,12 +54,12 @@ ProjectController.updateSome = (data, callback) => {
   const { token } = data.headers;
 
   Project.updateProjects(projects, token, (err, data) => {
-    if(!err) {
-      callback(202)
+    if (!err) {
+      callback(202);
     } else {
       callback(500, err);
     }
-  })
+  });
 };
 
 ProjectController.delete = (data, callback) => {

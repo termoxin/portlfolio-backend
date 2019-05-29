@@ -80,17 +80,17 @@ class Project {
     }
   }
 
-  static updateProject(name, description, img, src, token, callback) {
+  static updateProject(name, description, image, source, token, callback) {
     name = typeof name === "string" && name.length >= 3 ? name : "";
     description = typeof description === "string" ? description : "";
-    img = img ? img : null;
-    src = src ? src : null;
+    image = image ? image : null;
+    source = source ? source : null;
 
     const data = {
       name,
       description,
-      img,
-      src
+      image,
+      source
     };
 
     helpers.verifyToken(token, async (statusCode, err, isAdmin) => {

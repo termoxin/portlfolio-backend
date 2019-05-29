@@ -6,7 +6,14 @@ const querystring = require("querystring");
 const app = require("./../index");
 const config = require("../libs/config");
 const _data = require("../libs/data");
-const { token, tokenRequest, user, userMockup } = require("./config");
+
+const {
+  token,
+  tokenRequest,
+  user,
+  userMockup,
+  projectMockup
+} = require("./config");
 
 let api = {};
 let helpers = {};
@@ -108,4 +115,64 @@ describe("API", () => {
       });
     });
   });
+
+  describe("/api/projects", async () => {
+    before(() => {
+      _data
+        .promiseData("delete", "projects", projectMockup.name)
+        .catch(() => {});
+    });
+
+    it("/api/projects respond to POST with 202", done => {
+      helpers.request("/api/projects", "POST", projectMockup, res => {
+        assert.equal(res.statusCode, 202);
+        done();
+      });
+    });
+
+    it("/api/projects respond to GET with 200 and the project", done => {
+      const name = querystring.stringify({ name: projectMockup.name });
+
+      helpers.request("/api/projects?" + name, "GET", {}, res => {
+        assert.equal(res.statusCode, 200);
+        done();
+      });
+    });
+
+    it("/api/projects respond to GET with 200 and projects", done => {
+      helpers.request("/api/projects", "GET", {}, res => {
+        assert.equal(res.statusCode, 200);
+        done();
+      });
+    });
+
+    it("/api/projects respond to PUT with 202", done => {
+      helpers.request(
+        "/api/projects",
+        "PUT",
+        {
+          name: projectMockup.name,
+          description: "Test description",
+          image: "public/img/cover.jpg",
+          source: "...",
+          token
+        },
+        res => {
+          assert.equal(res.statusCode, 202);
+          done();
+        }
+      );
+    });
+
+    it("/api/projects respond to DELETE with 204", done => {
+      const name = querystring.stringify({ name: projectMockup.name });
+
+      helpers.request("/api/projects?" + name, "DELETE", { token }, res => {
+        assert.equal(res.statusCode, 204);
+        done();
+      });
+    });
+  });
+
+  describe("/api/messages", () => {});
 });
