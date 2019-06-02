@@ -9,7 +9,7 @@ MessageController.index = (data, callback) => {
     if (!err && messages) {
       callback(200, messages);
     } else {
-      callback(err);
+      callback(500, err);
     }
   });
 };
