@@ -1,6 +1,6 @@
 const querystring = require("querystring");
 
-const t = "05r852p81v9fsuz6xoiy";
+const t = "tedfdudnbqr9ju8did4j";
 const tokenRequest = querystring.stringify({ token: t });
 const token = t;
 const user = {
@@ -14,6 +14,12 @@ const projectMockup = {
   type: "js"
 };
 
+const messageMockup = {
+  name: "Test",
+  email: "test@gmail.com",
+  message: "Hey"
+};
+
 const userMockup = {
   username: "test",
   firstName: "Testing",
@@ -21,4 +27,11 @@ const userMockup = {
   password: "123123test"
 };
 
-module.exports = { tokenRequest, token, user, userMockup, projectMockup };
+module.exports = {
+  tokenRequest,
+  token,
+  user,
+  userMockup,
+  projectMockup,
+  messageMockup
+};

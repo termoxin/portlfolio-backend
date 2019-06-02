@@ -27,30 +27,27 @@ server.httpServer = () => {
 };
 
 server.collectRequestData = (req, res, callback) => {
+  if (req.url === "/api/uploadFile") {
+    const form = new formidable.IncomingForm();
 
-    if (req.url === "/api/uploadFile") {
-      const form = new formidable.IncomingForm();
+    form.uploadDir = path.join(__dirname, "../public/img");
+    form.keepExtensions = true;
 
-      form.uploadDir = path.join(__dirname, "../public/img");
-      form.keepExtensions = true;
+    form.on("fileBegin", function(name, file) {});
 
-      form.on("fileBegin", function(name, file) {
+    form.on("progress", function(bytesReceived, bytesExpected) {});
 
-      });
+    form.on("file", function(name, file) {
+      fs.renameSync(file.path, form.uploadDir + "/" + "avatar.jpg");
+    });
 
-      form.on("progress", function(bytesReceived, bytesExpected) {});
+    form.on("aborted", function(err) {
+      callback({ file: "ERROR!" });
+    });
 
-      form.on("file", function(name, file) {
-        fs.renameSync(file.path, form.uploadDir + "/" + "avatar.jpg");
-      });
-
-      form.on("aborted", function(err) {
-        callback({ file: "ERROR!" })
-      });
-
-      form.on("end", function() {
-       callback({ file: "OK!" })
-      });
+    form.on("end", function() {
+      callback({ file: "OK!" });
+    });
 
     form.parse(req);
   } else {

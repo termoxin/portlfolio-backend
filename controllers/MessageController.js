@@ -19,7 +19,7 @@ MessageController.store = (data, callback) => {
 
   Message.createMessage(name, email, message, err => {
     if (!err) {
-      callback(200);
+      callback(201);
     } else {
       callback(500, err);
     }
@@ -29,10 +29,9 @@ MessageController.store = (data, callback) => {
 MessageController.update = (data, callback) => {
   const { id } = data.body;
   const { token } = data.headers;
-
-  Message.updateMessage(id, token, (err, data) => {
+  Message.updateMessage(id, token, err => {
     if (!err) {
-      callback(202);
+      callback(202, data);
     } else {
       callback(500, err);
     }

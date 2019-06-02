@@ -10,14 +10,14 @@ const availableContentTypes = {
 };
 
 const developmentConfig = {
-  PORT: 4000,
+  PORT: 3000,
   HOST: "localhost",
   availableContentTypes
 };
 
 const productionConfig = {
-  PORT: 5000,
-  HOST: "",
+  PORT: 4000,
+  HOST: "0.0.0.0",
   availableContentTypes
 };
 

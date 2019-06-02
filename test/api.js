@@ -12,7 +12,8 @@ const {
   tokenRequest,
   user,
   userMockup,
-  projectMockup
+  projectMockup,
+  messageMockup
 } = require("./config");
 
 let api = {};
@@ -164,15 +165,74 @@ describe("API", () => {
       );
     });
 
-    it("/api/projects respond to DELETE with 204", done => {
-      const name = querystring.stringify({ name: projectMockup.name });
+    it("/api/updateProjects respond to PUT with 202", done => {
+      helpers.request(
+        "/api/updateProjects",
+        "PUT",
+        {
+          token,
+          projects: [
+            {
+              id: "jugb8tlrgktotbw28z8y",
+              name: "Test",
+              description: "Test description",
+              image: "",
+              source: "",
+              type: "js"
+            }
+          ]
+        },
+        res => {
+          assert.equal(res.statusCode, 202)
+          done();
+        }
+      );
+      
+    });
 
-      helpers.request("/api/projects?" + name, "DELETE", { token }, res => {
-        assert.equal(res.statusCode, 204);
+    // it("/api/projects respond to DELETE with 204", done => {
+    //   const name = querystring.stringify({ name: projectMockup.name });
+
+    //   helpers.request("/api/projects?" + name, "DELETE", { token }, res => {
+    //     assert.equal(res.statusCode, 204);
+    //     done();
+    //   });
+    // });
+  });
+
+  describe("/api/messages", () => {
+    it("/api/messages respond to GET with 200", done => {
+      helpers.request("/api/messages", "GET", {}, res => {
+        assert.equal(res.statusCode, 200);
         done();
       });
     });
-  });
 
-  describe("/api/messages", () => {});
+    it("/api/messages respond to POST with 201", done => {
+      helpers.request("/api/messages", "POST", messageMockup, res => {
+        assert.equal(res.statusCode, 201);
+        done();
+      });
+    });
+
+    it("/api/messages respond to PUT with 202", done => {
+      _data.list("messages", (err, data) => {
+        helpers.request("/api/messages", "PUT", { id: data[0], token }, res => {
+          assert.equal(res.statusCode, 202);
+          done();
+        });
+      });
+    });
+
+    it("/api/messages respond to DELETE with 204", done => {
+      _data.list("messages", (err, data) => {
+        const id = querystring.stringify({ id: data[0] });
+
+        helpers.request("/api/messages?" + id, "DELETE", {}, res => {
+          assert.equal(res.statusCode, 204);
+          done();
+        });
+      });
+    });
+  });
 });

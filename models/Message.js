@@ -12,8 +12,8 @@ class Message {
     try {
       const messages = await _data.promiseData("list", "messages");
 
-      if(!messages.length) {
-        callback(false, [])
+      if (!messages.length) {
+        callback(false, []);
       }
 
       messages.forEach(async message => {
@@ -41,11 +41,9 @@ class Message {
   }
 
   static async createMessage(name, email, message, callback) {
-
     name = typeof name === "string" && name.length >= 3 ? name : false;
     email = typeof email === "string" ? email : false;
     message = message ? message : null;
-
 
     try {
       const id = helpers.getRandomStr(20);
@@ -66,7 +64,7 @@ class Message {
           data
         );
 
-         callback(false);
+        callback(false);
       } else {
         callback({ error: "Some fields are invalid or empty." });
       }
@@ -79,17 +77,12 @@ class Message {
     helpers.verifyToken(token, async (statusCode, err, isAdmin) => {
       if (!err && statusCode === 200 && isAdmin) {
         try {
-
           const message = await _data.promiseData("read", "messages", id);
 
-          const result = await _data.promiseData(
-            "update",
-            "messages",
-            id,
-            { status: !message.status }
+          const result = await _data.promiseData("update", "messages", id, {
+            status: !message.status
+          });
 
-          );
-          
           callback(err, result, isAdmin);
         } catch (err) {
           callback(err);
@@ -100,15 +93,11 @@ class Message {
     });
   }
 
-
   static async deleteMessage(id, callback) {
     try {
       const data = await _data.promiseData("delete", "messages", id);
 
-      if (!err) {
-        callback(false);
-      }
-
+      callback(false);
     } catch (err) {
       callback(err);
     }

@@ -80,6 +80,7 @@ _data.update = (collection, id, payload, callback) => {
           if (!err) {
             callback(false, updatedData);
           } else {
+
             callback({ error: "Could not write the file." });
           }
         }
