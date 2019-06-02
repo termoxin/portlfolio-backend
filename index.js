@@ -6,13 +6,13 @@ let app = {};
 app.init = callback => {
   server.init();
 
-  setTimeout(() => {
-    cli.init();
-  }, 50);
+  if(process.env.NODE_ENV !== "production") {
+  	setTimeout(() => {
+    	cli.init();
+  	}, 50);
+  }
 };
 
 if (require.main === module) {
   app.init(() => {});
 }
-
-module.exports = app;

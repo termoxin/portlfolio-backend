@@ -18,10 +18,10 @@ let server = {};
 server.httpServer = () => {
   const httpServer = http.createServer(server.requestHandler);
 
-  httpServer.listen(config.PORT, config.HOST, () => {
+  httpServer.listen(process.env.PORT || config.PORT, () => {
     console.log(
       "\x1b[32m%s\x1b[0m",
-      `Server's listening in port: ${config.PORT}`
+      `Server's listening in port: ${process.env.PORT || config.PORT}`
     );
   });
 };

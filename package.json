@@ -8,9 +8,6 @@
     "start-dev": "NODE_DEBUG=server nodemon index.js",
     "test": "mocha"
   },
-  "engines": {
-    "node": "11.15.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/termoxin/portlfolio-backend.git"
